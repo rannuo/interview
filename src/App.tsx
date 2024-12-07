@@ -9,9 +9,9 @@ import { MockRedeemService } from './services/MockRedeemService';
 
 import { GiftInfo } from './model';
 
-import './App.css';
 import { IHistoryService } from './services/IHistoryService';
 import { HistoryView } from './features/History';
+import './App.css';
 
 
 type Step = {
@@ -57,7 +57,7 @@ function App() {
         <RedeemGiftView giftInfo={step.giftInfo} code={step.code} redeemService={redeemService} historyService={historyService} />
       ) : null}
 
-      <button onClick={() => setHistoryVisible(true)}>History</button>
+      <button className="historyBtn" onClick={() => setHistoryVisible(true)}>History</button>
       {historyVisible ? <HistoryView historyService={historyService} onClose={() => setHistoryVisible(false)} /> : null}
     </div>
   )

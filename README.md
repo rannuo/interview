@@ -7,6 +7,14 @@
 
 
 
+## 本地开发
+
+```sh
+npm i
+npm run dev 
+```
+
+
 TODO
 
 - [x] 完成核心逻辑
