@@ -15,9 +15,9 @@ import './App.css';
 
 
 type Step = {
-  step: 'redeem'
+  step: 'verify'
 } | {
-  step: 'receive',
+  step: 'redeem',
   code: string;
   giftInfo: GiftInfo
 };
@@ -33,13 +33,13 @@ function App() {
 
   const [historyService] = useState<IHistoryService>(() => new LocalHistoryService());
 
-  const [step, setStep] = useState<Step>(() => ({ step: 'redeem' } as Step));
+  const [step, setStep] = useState<Step>(() => ({ step: 'verify' } as Step));
 
   const [historyVisible, setHistoryVisible] = useState(false);
 
-  function handleRedeemSucc(giftInfo: GiftInfo, code: string) {
+  function handleVerifySucc(giftInfo: GiftInfo, code: string) {
     setStep({
-      step: 'receive',
+      step: 'redeem',
       giftInfo,
       code,
     });
@@ -47,13 +47,13 @@ function App() {
 
   return (
     <div className='app'>
-      {step.step === 'redeem' ? (
+      {step.step === 'verify' ? (
         <VerifyCodeView
           redeemService={redeemService}
-          onRedeemSucc={handleRedeemSucc}
+          onVerifySucc={handleVerifySucc}
         />
       ) : null}
-      {step.step === 'receive' ? (
+      {step.step === 'redeem' ? (
         <RedeemGiftView giftInfo={step.giftInfo} code={step.code} redeemService={redeemService} historyService={historyService} />
       ) : null}
 
