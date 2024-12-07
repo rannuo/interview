@@ -45,3 +45,12 @@ export interface RedeemGiftResponse {
         message: string;
     }
 }
+
+
+export interface HistroyItem {
+    giftInfo: GiftInfo,
+    redeemResultInfo: RedeemGiftResultInfo,
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format
+    // date.toISOString()
+    redeemTime: string;
+}

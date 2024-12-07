@@ -3,14 +3,19 @@ import { toast, unknownErrorToast } from "../../base/toast";
 import { GiftInfo, RedeemGiftResultInfo } from "../../model"
 import { IRedeemService } from "../../services/IRedeemService";
 import styles from './index.module.css';
+import { IHistoryService } from "../../services/IHistoryService";
 
 interface IProps {
     giftInfo: GiftInfo;
     code: string;
     redeemService: IRedeemService;
+    historyService: IHistoryService;
 }
 
-export const RedeemGiftView = ({ giftInfo, code, redeemService }: IProps) => {
+/**
+ * 领取礼品界面
+ */
+export const RedeemGiftView = ({ giftInfo, code, redeemService, historyService }: IProps) => {
     const [redeemInfo, setRedeemInfo] = useState<RedeemGiftResultInfo | null>(null);
     function handleConfirm() {
         redeemService.redeemGift({
@@ -19,7 +24,13 @@ export const RedeemGiftView = ({ giftInfo, code, redeemService }: IProps) => {
         })
             .then(res => {
                 if (res.success && res.resultInfo) {
+                    // 领取成功
                     setRedeemInfo(res.resultInfo);
+                    historyService.addItem({
+                        giftInfo,
+                        redeemResultInfo: res.resultInfo,
+                        redeemTime: new Date().toISOString(),
+                    });
                 } else if (res.error) {
                     toast(res.error.message || '未知错误，请联系客服');
                 }
