@@ -1,8 +1,20 @@
-function App() {
+import { useState } from 'react';
+import { RedeemPage } from './features/Redeem';
 
+import { RedeemService } from './services/RedeemService';
+import { MockRedeemService } from './services/MockRedeemService';
+
+
+function App() {
+  const [redeemService] = useState(() => {
+    if (import.meta.env.DEV) {
+      return new MockRedeemService();
+    }
+    return new RedeemService;
+  });
   return (
-    <div>
-      <h1>Hello world</h1>
+    <div id="root">
+      <RedeemPage redeemService={redeemService} />
     </div>
   )
 }
