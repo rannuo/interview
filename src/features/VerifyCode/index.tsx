@@ -21,7 +21,8 @@ function parsePastedCode(str: string): RedeemCode {
     str = str.replace(/-/g, '');
     return chunkStr(str, CODE_SEGMENT_LENGTH)
         .map(solidStr)
-        .map(x => x.slice(0, CODE_SEGMENT_LENGTH));
+        .map(x => x.slice(0, CODE_SEGMENT_LENGTH))
+        .slice(0, CODE_SEGMENTS);
 }
 
 /**

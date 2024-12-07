@@ -1,4 +1,84 @@
-.giftPage {
-    max-width: 500px;
-    text-align: left;
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.giftName {
+    font-size: 22px;
+}
+
+.giftDesc {
+    font-size: 14px;
+}
+
+.giftExpireTime {
+    font-size: 12px;
+}
+
+.confirmBtn {
+    margin: 20px;
+}
+
+.list {
+    width: 200px;
+    max-height: 120px;
+
+    overflow: auto;
+
+    border: 4px solid red;
+    border-radius: 4px;
+
+    padding: 0;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+
+    padding: .5em 0;
+}
+
+.icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+
+    margin: 0 .5em;
+
+    flex: none;
+}
+
+.itemName {
+    flex: auto;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.itemAmount {
+    color: #fff;
+    background: #2ec80c;
+    font-size: 12px;
+    text-align: center;
+    line-height: 16px;
+
+    padding: 0 10px;
+    border-radius: 8px;
+
+    margin: 0 .2em;
+
+    flex: none;
+}
+
+.dialog {
+    background-color: #fff;
+    border-radius: 8px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 20px;
 }
