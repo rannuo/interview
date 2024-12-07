@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { IHistoryService } from "../../services/IHistoryService"
 import { HistroyItem } from "../../model";
 
+import styles from './index.module.css';
+import { Loading } from "../../views/Loading";
+
 interface IProps {
     historyService: IHistoryService;
     onClose: () => void;
@@ -14,25 +17,35 @@ export const HistoryView = ({ historyService, onClose }: IProps) => {
     
     const [historyItems, setHistoryItems] = useState<HistroyItem[]>([]);
 
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         const items = historyService.getRecentItems();
         setHistoryItems(items);
     }, []);
 
     return (
-        <dialog open>
-            {historyItems.length > 0 ?(
-                <ul>
-                    {historyItems.map(x => (
-                        <li key={x.redeemTime}>
-                            {x.redeemResultInfo.orderNo}
-                            {x.redeemResultInfo.redeemTime}
-                        </li>
-                    ))}
-                </ul>
-            ) : <div>loading...</div>}
-            
-            <button onClick={onClose}>Close</button>
-        </dialog>
+        <div className={styles.container}>
+            {loading ? (
+                <Loading singleton />
+            ) : (
+                historyItems.length > 0 ? (
+                    <ul className={styles.list}>
+                        {historyItems.map(x => (
+                            <li key={x.redeemTime} className={styles.item}>
+                                <div className={styles.giftName}>{x.giftInfo.name}</div>
+                                <div className={styles.giftDesc}>{x.giftInfo.description}</div>
+                                <div className={styles.giftExpireTime}>过期时间：{x.giftInfo.expireTime}</div>
+                                <div className={styles.giftRedeemTime}>兑换时间：{x.redeemResultInfo.redeemTime}</div>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <div>暂时没有记录，快去兑换吧</div>
+                )
+            )}
+    
+            <button className={styles.closeBtn} onClick={onClose}>X</button>
+        </div>
     )
 }

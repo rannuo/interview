@@ -1,0 +1,63 @@
+.container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    min-height: 100vh;
+
+    overflow: auto;
+
+    background-color: #eee;
+}
+
+
+.list {
+    padding: 30px;
+    max-height: 100vh;
+    overflow: auto;
+}
+
+.item {    
+    list-style: none;
+
+    background-color: #fff;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: .5em;
+
+    margin: 1em 0;
+}
+
+.giftName {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.giftDesc {
+    font-size: 14px;
+}
+
+.giftExpireTime {
+    font-size: 12px;
+}
+
+.giftRedeemTime {
+    font-size: 12px;
+    text-align: right;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+
+    font-size: 16px;
+
+    line-height: 24px;
+    padding: 0 0;
+    width: 28px;
+    text-align: center;
+}

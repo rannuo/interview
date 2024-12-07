@@ -1,5 +1,5 @@
 import { RedeemGiftRequest, RedeemGiftResponse, VerifyCodeRequest, VerifyCodeResponse } from "../model";
-import { sleep } from "../utils";
+import { formatDate, sleep } from "../utils";
 import { IRedeemService } from "./IRedeemService";
 
 function mockGifts(n: number) {
@@ -23,7 +23,7 @@ const mockSuccessVerifyCode: VerifyCodeResponse = {
         id: 'abc',
         name: '尊享大礼包',
         description: '仅限当日，请快快领取',
-        expireTime: '2024-12-07',
+        expireTime: formatDate(new Date()),
         items: mockGifts(10),
     }
 }
