@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { RedeemPage } from './features/Redeem';
-import { GiftPage } from './features/Gift';
+import { VerifyCodeView } from './features/VerifyCode';
+import { RedeemGiftView } from './features/RedeemGift';
 
 import { RedeemService } from './services/RedeemService';
 import { MockRedeemService } from './services/MockRedeemService';
@@ -41,13 +41,13 @@ function App() {
   return (
     <div className='app'>
       {step.step === 'redeem' ? (
-        <RedeemPage
+        <VerifyCodeView
           redeemService={redeemService}
           onRedeemSucc={handleRedeemSucc}
         />
       ) : null}
       {step.step === 'receive' ? (
-        <GiftPage giftInfo={step.giftInfo} code={step.code} redeemService={redeemService} />
+        <RedeemGiftView giftInfo={step.giftInfo} code={step.code} redeemService={redeemService} />
       ) : null}
     </div>
   )

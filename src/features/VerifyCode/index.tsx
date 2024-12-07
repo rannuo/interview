@@ -42,14 +42,14 @@ function validateCode(code: RedeemCode): string | null {
 }
 
 
-interface IRedeemPageProps {
+interface IProps {
     redeemService: IRedeemService;
     onRedeemSucc: (giftInfo: GiftInfo, code: string) => void;
 }
 /**
- * 兑换码页面
+ * 兑换码检验页面
  */
-export const RedeemPage = ({ redeemService, onRedeemSucc }: IRedeemPageProps) => {
+export const VerifyCodeView = ({ redeemService, onRedeemSucc }: IProps) => {
     // aaaa-aaaa-aaaa-aaaa
     const [code, setCode] = useState<string[]>(Array(CODE_SEGMENTS).fill(''));
     const [error, setError] =  useState<string | null>(null);
