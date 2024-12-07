@@ -4,13 +4,13 @@ import { GiftInfo, RedeemGiftResultInfo } from "../../model"
 import { IRedeemService } from "../../services/IRedeemService";
 import styles from './index.module.css';
 
-interface IGiftPageProps {
+interface IProps {
     giftInfo: GiftInfo;
     code: string;
     redeemService: IRedeemService;
 }
 
-export const GiftPage = ({ giftInfo, code, redeemService }: IGiftPageProps) => {
+export const RedeemGiftView = ({ giftInfo, code, redeemService }: IProps) => {
     const [redeemInfo, setRedeemInfo] = useState<RedeemGiftResultInfo | null>(null);
     function handleConfirm() {
         redeemService.redeemGift({
