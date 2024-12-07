@@ -46,8 +46,9 @@ interface IProps {
     redeemService: IRedeemService;
     onRedeemSucc: (giftInfo: GiftInfo, code: string) => void;
 }
+
 /**
- * 兑换码检验页面
+ * 兑换码检验界面
  */
 export const VerifyCodeView = ({ redeemService, onRedeemSucc }: IProps) => {
     // aaaa-aaaa-aaaa-aaaa

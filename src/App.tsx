@@ -4,11 +4,14 @@ import { VerifyCodeView } from './features/VerifyCode';
 import { RedeemGiftView } from './features/RedeemGift';
 
 import { RedeemService } from './services/RedeemService';
+import { LocalHistoryService } from './services/LocalHistoryService';
 import { MockRedeemService } from './services/MockRedeemService';
 
 import { GiftInfo } from './model';
 
 import './App.css';
+import { IHistoryService } from './services/IHistoryService';
+import { HistoryView } from './features/History';
 
 
 type Step = {
@@ -28,7 +31,11 @@ function App() {
     return new RedeemService;
   });
 
+  const [historyService] = useState<IHistoryService>(() => new LocalHistoryService());
+
   const [step, setStep] = useState<Step>(() => ({ step: 'redeem' } as Step));
+
+  const [historyVisible, setHistoryVisible] = useState(false);
 
   function handleRedeemSucc(giftInfo: GiftInfo, code: string) {
     setStep({
@@ -47,8 +54,11 @@ function App() {
         />
       ) : null}
       {step.step === 'receive' ? (
-        <RedeemGiftView giftInfo={step.giftInfo} code={step.code} redeemService={redeemService} />
+        <RedeemGiftView giftInfo={step.giftInfo} code={step.code} redeemService={redeemService} historyService={historyService} />
       ) : null}
+
+      <button onClick={() => setHistoryVisible(true)}>History</button>
+      {historyVisible ? <HistoryView historyService={historyService} onClose={() => setHistoryVisible(false)} /> : null}
     </div>
   )
 }

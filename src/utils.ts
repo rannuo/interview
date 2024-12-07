@@ -20,4 +20,3 @@ export function chunkStr(str: string, length: number) {
 export function solidStr(str: string) {
     return str.trim().replace(/\s/gi, '');
 }
-
