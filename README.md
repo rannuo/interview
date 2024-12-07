@@ -1,50 +1,37 @@
-# 
+# 游戏礼包兑换系统
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+主要功能
+- 验证兑换码页面 ✅ 
+- 领取礼品页面 ✅
+- 历史记录页面 ✅
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+TODO
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- [x] 完成核心逻辑
+- [ ] 样式优化
+- [ ] 进阶功能
+  - [ ] 实时格式校验
+  - [ ] 输入错误提示动画
+  - [ ] 支持扫码输入
+  - [ ] 礼包领取成功动画
+  - [ ] 响应式布局适配
+  - [ ] 深色主题支持
+- [ ] 清理代码
 
-- Configure the top-level `parserOptions` property like this:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## 扫码输入思路
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+1. 调用用摄像头，获取视频流
+2. 调用 QRcode 库尽实时 parse 视频流的每一帧
+3. 根据 parse 的结果，一旦校验通过则关闭视频流，把解析到的码填到输入框内
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+
+## 未来计划
+1. 接入国际化
+2. 如果业务变得越来越复杂，考虑是否引入统一的状态管理
+
+
+
