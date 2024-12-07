@@ -20,3 +20,9 @@ export function chunkStr(str: string, length: number) {
 export function solidStr(str: string) {
     return str.trim().replace(/\s/gi, '');
 }
+
+export function sleep(t: number) {
+    return new Promise(resolve => {
+        setTimeout(resolve, t)
+    });
+}

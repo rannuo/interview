@@ -1,5 +1,21 @@
 import { RedeemGiftRequest, RedeemGiftResponse, VerifyCodeRequest, VerifyCodeResponse } from "../model";
+import { sleep } from "../utils";
 import { IRedeemService } from "./IRedeemService";
+
+function mockGifts(n: number) {
+    const rets =  [];
+    for (let i = 0; i < n; i ++) {
+        rets.push(
+            {
+                id: 'abc-' + i,
+                name: '一只熊' + '熊'.repeat(i),
+                icon: 'https://picsum.photos/id/237/16/16',
+                amount: i,
+            }
+        )
+    }
+    return rets;
+}
 
 const mockSuccessVerifyCode: VerifyCodeResponse = {
     success: true,
@@ -8,26 +24,7 @@ const mockSuccessVerifyCode: VerifyCodeResponse = {
         name: '尊享大礼包',
         description: '仅限当日，请快快领取',
         expireTime: '2024-12-07',
-        items: [
-            {
-                id: 'abc-1',
-                name: '一只熊',
-                icon: 'https://picsum.photos/id/237/16/16',
-                amount: 1,
-            },
-            {
-                id: 'abc-2',
-                name: '一只熊',
-                icon: 'https://picsum.photos/id/237/16/16',
-                amount: 2,
-            },
-            {
-                id: 'abc-3',
-                name: '一只熊',
-                icon: 'https://picsum.photos/id/237/16/16',
-                amount: 3,
-            },
-        ],
+        items: mockGifts(10),
     }
 }
 
@@ -44,7 +41,7 @@ export class MockRedeemService implements IRedeemService {
         // TODO: 可以用装饰器优化
         log('[verifyCode][request]: ', req);
         log('[verifyCode][response]: ', mockSuccessVerifyCode);
-        return Promise.resolve(mockSuccessVerifyCode);
+        return sleep(2000).then(() => mockSuccessVerifyCode);
     }
 
     redeemGift(req: RedeemGiftRequest): Promise<RedeemGiftResponse> {
@@ -57,6 +54,6 @@ export class MockRedeemService implements IRedeemService {
             },
         };
         log('[redeemGift][response]: ', mockRedeemSucc);
-        return Promise.resolve(mockRedeemSucc);
+        return sleep(2000).then(() => mockRedeemSucc);
     }
 }

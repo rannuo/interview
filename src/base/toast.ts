@@ -1,5 +1,6 @@
 export function toast(str: string) {
-    // TODO: implements this
+    // TODO: style this
+    alert(str);
 }
 
 export function unknownErrorToast() {
