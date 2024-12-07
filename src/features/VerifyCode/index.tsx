@@ -32,7 +32,7 @@ function parsePastedCode(str: string): RedeemCode {
  */
 function validateCode(code: RedeemCode): string | null {
     if (code.map(solidStr).filter(x => x.length > 0).length < CODE_SEGMENTS) {
-        return '兑换不足四组，请检查'
+        return '兑换码不足四组，请检查'
     }
     for (const seg of code) {
         if (seg.length < CODE_SEGMENT_LENGTH) {

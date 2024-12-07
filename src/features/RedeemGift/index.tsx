@@ -63,7 +63,7 @@ export const RedeemGiftView = ({ giftInfo, code, redeemService, historyService }
         <div className={styles.container}>
             <div className={styles.giftName}>{giftInfo.name}</div>
             <div className={styles.giftDesc}>{giftInfo.description}</div>
-            <div className={styles.giftExpireTime}>{giftInfo.expireTime}</div>
+            <div className={styles.giftExpireTime}>过期时间：{giftInfo.expireTime}</div>
 
             <div>礼品列表</div>
             <ul className={styles.list}>

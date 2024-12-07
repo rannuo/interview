@@ -9,7 +9,7 @@ function mockGifts(n: number) {
             {
                 id: 'abc-' + i,
                 name: '一只熊' + '熊'.repeat(i),
-                icon: 'https://picsum.photos/id/237/16/16',
+                icon: 'https://picsum.photos/id/237/30/30',
                 amount: i,
             }
         )
@@ -50,7 +50,7 @@ export class MockRedeemService implements IRedeemService {
             success: true,
             resultInfo: {
                 orderNo: '123456',
-                redeemTime: '2024-12-07'
+                redeemTime: formatDate(new Date())
             },
         };
         log('[redeemGift][response]: ', mockRedeemSucc);

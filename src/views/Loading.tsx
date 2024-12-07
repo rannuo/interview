@@ -1,12 +1,12 @@
 import styles from './Loading.module.css';
 
 interface IProps {
-    singleton: boolean;
+    singleton?: boolean;
 }
 /**
  * @copyright https://loading.io/css/
  */
-export const Loading = ({ singleton }: IProps) => {
+export const Loading = ({ singleton = false }: IProps) => {
     const core = <div className={styles.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>;
 
     if (singleton) {
