@@ -1,4 +1,5 @@
 import { RedeemGiftRequest, RedeemGiftResponse, VerifyCodeRequest, VerifyCodeResponse } from "../model";
+import { sleep } from "../utils";
 import { IRedeemService } from "./IRedeemService";
 
 const mockSuccessVerifyCode: VerifyCodeResponse = {
@@ -44,7 +45,7 @@ export class MockRedeemService implements IRedeemService {
         // TODO: 可以用装饰器优化
         log('[verifyCode][request]: ', req);
         log('[verifyCode][response]: ', mockSuccessVerifyCode);
-        return Promise.resolve(mockSuccessVerifyCode);
+        return sleep(3000).then(() => mockSuccessVerifyCode);
     }
 
     redeemGift(req: RedeemGiftRequest): Promise<RedeemGiftResponse> {
@@ -57,6 +58,6 @@ export class MockRedeemService implements IRedeemService {
             },
         };
         log('[redeemGift][response]: ', mockRedeemSucc);
-        return Promise.resolve(mockRedeemSucc);
+        return sleep(3000).then(() => mockRedeemSucc);
     }
 }
