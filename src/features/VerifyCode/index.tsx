@@ -47,15 +47,15 @@ function validateCode(code: RedeemCode): string | null {
 
 interface IProps {
     redeemService: IRedeemService;
-    onRedeemSucc: (giftInfo: GiftInfo, code: string) => void;
+    onVerifySucc: (giftInfo: GiftInfo, code: string) => void;
 }
 
 /**
  * 兑换码检验界面
  */
-export const VerifyCodeView = ({ redeemService, onRedeemSucc }: IProps) => {
+export function VerifyCodeView({ redeemService, onVerifySucc }: IProps) {
     // 格式：aaaa-aaaa-aaaa-aaaa
-    const [code, setCode] = useState<string[]>(Array(CODE_SEGMENTS).fill(''));
+    const [code, setCode] = useState<string[]>(() => Array(CODE_SEGMENTS).fill(''));
     const [error, setError] =  useState<string | null>(null);
     const [dirty, setDirty] = useState(false);
     const [verifying, setVerifying] = useState(false);
@@ -125,7 +125,7 @@ export const VerifyCodeView = ({ redeemService, onRedeemSucc }: IProps) => {
             })
             .then(res => {
                 if (res.success && res.giftInfo) {
-                    onRedeemSucc(res.giftInfo, codeString)
+                    onVerifySucc(res.giftInfo, codeString)
                 } else if (res.error) {
                     toast(res.error.message || '兑换失败，请联系客服')
                 } else {
