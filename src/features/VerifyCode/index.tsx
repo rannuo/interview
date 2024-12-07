@@ -5,6 +5,8 @@ import styles from './index.module.css';
 import { IRedeemService } from "../../services/IRedeemService";
 import { GiftInfo } from '../../model';
 import { toast, unknownErrorToast } from '../../base/toast';
+import { logError } from "../../base/logger";
+import { Loading } from "../../views/Loading";
 
 const CODE_SEGMENTS = 4;
 const CODE_SEGMENT_LENGTH = 4;
@@ -28,7 +30,7 @@ function parsePastedCode(str: string): RedeemCode {
  * @returns 
  */
 function validateCode(code: RedeemCode): string | null {
-    if (code.length < CODE_SEGMENTS) {
+    if (code.map(solidStr).filter(x => x.length > 0).length < CODE_SEGMENTS) {
         return '兑换不足四组，请检查'
     }
     for (const seg of code) {
@@ -51,26 +53,26 @@ interface IProps {
  * 兑换码检验界面
  */
 export const VerifyCodeView = ({ redeemService, onRedeemSucc }: IProps) => {
-    // aaaa-aaaa-aaaa-aaaa
+    // 格式：aaaa-aaaa-aaaa-aaaa
     const [code, setCode] = useState<string[]>(Array(CODE_SEGMENTS).fill(''));
     const [error, setError] =  useState<string | null>(null);
+    const [dirty, setDirty] = useState(false);
+    const [verifying, setVerifying] = useState(false);
 
     const inputsRef = useRef(new Map<number, HTMLInputElement>());
 
     function handleCodeChange(e: React.ChangeEvent<HTMLInputElement>, index: number) {
-        setError(null);
-
         const codeValue = solidStr(e.target.value).slice(0, CODE_SEGMENTS);
         const newCode = code.slice();
         newCode[index] = codeValue;
         setCode(newCode);
 
+        setDirty(true);
+
         // 自动跳转下一个
         if (codeValue.length === CODE_SEGMENT_LENGTH) {
             inputsRef.current.get(index + 1)?.focus();
         }
-
-        // TODO: 停留一段时间后校验，频繁校验体验不太好
     }
 
     const inputLine = [];
@@ -103,10 +105,6 @@ export const VerifyCodeView = ({ redeemService, onRedeemSucc }: IProps) => {
         const pasteCode = (event.clipboardData || window.clipboardData).getData("text");
         const parsedCode = parsePastedCode(pasteCode);
         setCode(parsedCode);
-        const error = validateCode(parsedCode);
-        if (error) {
-            setError(error);
-        }
     }
 
     function handleSubmit() {
@@ -114,8 +112,12 @@ export const VerifyCodeView = ({ redeemService, onRedeemSucc }: IProps) => {
         if (error) {
             setError(error);
         } else {
-            // TODO: 进行兑换
-            // TODO: 防止连续点击
+            // 防止连续点击
+            if (verifying) {
+                return;
+            }
+            setVerifying(true);
+
             const codeString = code.join('-');
             redeemService.verifyCode({
                 code: codeString,
@@ -131,37 +133,39 @@ export const VerifyCodeView = ({ redeemService, onRedeemSucc }: IProps) => {
             })
             .catch(err => {
                 unknownErrorToast();
-                // TODO: 错误上报
-                // logError(err);
+                logError(err);
+            })
+            .finally(() => {
+                setVerifying(false);
             })
         }
     }
 
     // 实时校验
     useEffect(() => {
-        const error = validateCode(code);
-        if (error) {
-            // 如果错误这里不处理
-            // 错误信息在行为触发处设置，体验较好
-        } else {
-            // 如果正确，则置空错误信息
-            setError(null);
+        if (dirty) {
+            setError(validateCode(code));
         }
-    }, [code]);
+    }, [code, dirty]);
 
     return (
-        <div>
+        <div className={styles.container}>
+            <label className={styles.label}>
+                请输入兑换码:
+            </label>
+            <p className={styles.labelTip}>
+                （4组，每组4位，支持粘贴完整的兑换码）
+            </p>
             <div onPaste={handlePaste}>
-                <label>请输入兑换码（4组，每组4位，支持粘贴完整的码）:</label>
-                <br />
                 {inputLine}
             </div>
-            {error ? (
-                <div>{error}</div>
-            ) : null}
-            <div>
-                <button onClick={handleSubmit}>确认兑换</button>
+            <div className={styles.errorMsgLocator}>
+                {error ? (
+                    <div className={styles.errorMsg}>{error}</div>
+                ) : null}
             </div>
+            <button className={styles.confirmBtn} onClick={handleSubmit}>确认兑换</button>
+            {verifying ? <Loading /> : null}
         </div>
     )
 }
