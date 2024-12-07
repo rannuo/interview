@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react"
 import { solidStr, chunkStr } from '../../utils';
 import styles from './index.module.css';
 import { IRedeemService } from "../../services/IRedeemService";
-import { VerifyCodeResponse } from '../../model';
+import { GiftInfo } from '../../model';
 import { toast, unknownErrorToast } from '../../base/toast';
 
 const CODE_SEGMENTS = 4;
@@ -44,7 +44,7 @@ function validateCode(code: RedeemCode): string | null {
 
 interface IRedeemPageProps {
     redeemService: IRedeemService;
-    onRedeemSucc: (giftInfo: VerifyCodeResponse['giftInfo']) => void;
+    onRedeemSucc: (giftInfo: GiftInfo, code: string) => void;
 }
 /**
  * 兑换码页面
@@ -115,12 +115,13 @@ export const RedeemPage = ({ redeemService, onRedeemSucc }: IRedeemPageProps) =>
         } else {
             // TODO: 进行兑换
             // TODO: 防止连续点击
+            const codeString = code.join('-');
             redeemService.verifyCode({
-                code: code.join('-')
+                code: codeString,
             })
             .then(res => {
-                if (res.success) {
-
+                if (res.success && res.giftInfo) {
+                    onRedeemSucc(res.giftInfo, codeString)
                 } else if (res.error) {
                     toast(res.error.message || '兑换失败，请联系客服')
                 } else {

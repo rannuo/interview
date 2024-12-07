@@ -3,20 +3,23 @@ export interface VerifyCodeRequest {
     code: string; // 完整兑换码
 }
 
-export interface VerifyCodeResponse {
-    success: boolean;
-    giftInfo?: {
+// 礼包内容
+export interface GiftInfo {
+    id: string;
+    name: string;
+    description: string;
+    expireTime: string;
+    items: Array<{
         id: string;
         name: string;
-        description: string;
-        expireTime: string;
-        items: Array<{
-            id: string;
-            name: string;
-            icon: string;
-            amount: number;
-        }>;
-    };
+        icon: string;
+        amount: number;
+    }>;
+};
+
+export interface VerifyCodeResponse {
+    success: boolean;
+    giftInfo?: GiftInfo;
     error?: {
         code: number;
         message: string;
@@ -29,12 +32,14 @@ export interface RedeemGiftRequest {
     giftId: string;
 }
 
+export interface RedeemGiftResultInfo {
+    orderNo: string;
+    redeemTime: string;
+}
+
 export interface RedeemGiftResponse {
     success: boolean;
-    resultInfo?: {
-        orderNo: string;
-        redeemTime: string;
-    };
+    resultInfo?: RedeemGiftResultInfo;
     error?: {
         code: number;
         message: string;
