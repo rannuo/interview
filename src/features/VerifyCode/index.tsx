@@ -1,12 +1,12 @@
-import { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect, ReactNode } from "react"
 
-import { solidStr, chunkStr } from '../../utils';
+import {solidStr, chunkStr} from '../../utils';
 import styles from './index.module.css';
-import { IRedeemService } from "../../services/IRedeemService";
-import { GiftInfo } from '../../model';
-import { toast, unknownErrorToast } from '../../base/toast';
-import { logError } from "../../base/logger";
-import { Loading } from "../../views/Loading";
+import {IRedeemService} from "../../services/IRedeemService";
+import {GiftInfo} from '../../model';
+import {toast, unknownErrorToast} from '../../base/toast';
+import {logError} from "../../base/logger";
+import {Loading} from "../../views/Loading";
 
 const CODE_SEGMENTS = 4;
 const CODE_SEGMENT_LENGTH = 4;
@@ -27,8 +27,8 @@ function parsePastedCode(str: string): RedeemCode {
 
 /**
  * 校验兑换码，返回 string 代表错误，返回 null 代表没问题
- * @param code 
- * @returns 
+ * @param code
+ * @returns
  */
 function validateCode(code: RedeemCode): string | null {
     if (code.map(solidStr).filter(x => x.length > 0).length < CODE_SEGMENTS) {
@@ -53,10 +53,10 @@ interface IProps {
 /**
  * 兑换码检验界面
  */
-export function VerifyCodeView({ redeemService, onVerifySucc }: IProps) {
+export function VerifyCodeView({redeemService, onVerifySucc}: IProps) {
     // 格式：aaaa-aaaa-aaaa-aaaa
     const [code, setCode] = useState<string[]>(() => Array(CODE_SEGMENTS).fill(''));
-    const [error, setError] =  useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
     const [dirty, setDirty] = useState(false);
     const [verifying, setVerifying] = useState(false);
 
@@ -76,9 +76,9 @@ export function VerifyCodeView({ redeemService, onVerifySucc }: IProps) {
         }
     }
 
-    const inputLine = [];
+    const inputLine: ReactNode[] = [];
 
-    for (let i = 0; i < CODE_SEGMENTS; i++) {
+    Array(CODE_SEGMENTS).fill(0).forEach((_, i) => {
         inputLine.push(
             <input
                 className={styles.input}
@@ -98,12 +98,15 @@ export function VerifyCodeView({ redeemService, onVerifySucc }: IProps) {
         if (i !== CODE_SEGMENTS - 1) {
             inputLine.push(<span key={i+'-separator'}>-</span>)
         }
-    }
+    });
 
     function handlePaste(event: React.ClipboardEvent<HTMLDivElement>) {
         event.preventDefault();
-        // @ts-ignore
-        const pasteCode = (event.clipboardData || window.clipboardData).getData("text");
+        const pasteCode = (
+            event.clipboardData ||
+            // @ts-expect-error copy from mdn
+            window.clipboardData
+        ).getData("text");
         const parsedCode = parsePastedCode(pasteCode);
         setCode(parsedCode);
     }
