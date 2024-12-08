@@ -17,11 +17,12 @@ export const HistoryView = ({ historyService, onClose }: IProps) => {
     
     const [historyItems, setHistoryItems] = useState<HistroyItem[]>([]);
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const items = historyService.getRecentItems();
         setHistoryItems(items);
+        setLoading(false);
     }, []);
 
     return (

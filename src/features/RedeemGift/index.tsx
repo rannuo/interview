@@ -21,7 +21,6 @@ interface IProps {
 export const RedeemGiftView = ({ giftInfo, code, redeemService, historyService }: IProps) => {
     const [redeemInfo, setRedeemInfo] = useState<RedeemGiftResultInfo | null>(null);
     const [dialogMount, setDialogMount] = useState(false);
-    const [dialogVisible, setDialogVisible] = useState(false);
     const [redeeming, setRedeeming] = useState(false);
 
 
@@ -39,7 +38,6 @@ export const RedeemGiftView = ({ giftInfo, code, redeemService, historyService }
                     // 领取成功
                     setRedeemInfo(res.resultInfo);
                     setDialogMount(true);
-                    setDialogVisible(true);
                     historyService.addItem({
                         giftInfo,
                         redeemResultInfo: res.resultInfo,
@@ -69,7 +67,7 @@ export const RedeemGiftView = ({ giftInfo, code, redeemService, historyService }
             <ul className={styles.list}>
                 {giftInfo.items.map(x => (
                     <li key={x.id} className={styles.item}>
-                        <img src={x.icon} className={styles.icon} />
+                        <img src={x.icon} alt="gift-icon" className={styles.icon} />
                         <div className={styles.itemName}>
                             {x.name}
                         </div>
@@ -84,22 +82,23 @@ export const RedeemGiftView = ({ giftInfo, code, redeemService, historyService }
             {dialogMount && redeemInfo ? (
                 // 领取成功反馈
                 <Dialog
-                    visible={dialogVisible}
                     onClose={() => {
                         setDialogMount(false);
                         // TODO: 弹窗关闭后续动作，找产品确认这些细节
                     }}
                 >
-                    <div className={styles.dialog}>
-                        <h2>恭喜领取成功</h2>
-                        <p>
-                            订单号：{redeemInfo.orderNo}
-                        </p>
-                        <p>
-                            领取时间: {redeemInfo.redeemTime}
-                        </p>
-                        <button onClick={() => setDialogVisible(false)}>OK</button>
-                    </div>
+                    {(close) => (
+                        <div className={styles.dialog}>
+                            <h2>恭喜领取成功</h2>
+                            <p>
+                                订单号：{redeemInfo.orderNo}
+                            </p>
+                            <p>
+                                领取时间: {redeemInfo.redeemTime}
+                            </p>
+                            <button onClick={close}>OK</button>
+                        </div>
+                    )}
                 </Dialog>
             ) : null}
             {redeeming ? <Loading /> : null}
